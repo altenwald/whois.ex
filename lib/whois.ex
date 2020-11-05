@@ -38,7 +38,7 @@ defmodule Whois do
               {:ok, raw}
 
             next_server ->
-              opts = opts |> Keyword.put(:server, next_server)
+              opts = Keyword.put(opts, :server, next_server)
 
               with {:ok, raw2} <- lookup_raw(domain, opts) do
                 {:ok, raw <> raw2}
@@ -66,8 +66,8 @@ defmodule Whois do
       |> String.trim()
       |> String.downcase()
       |> case do
-        "whois server:" <> host -> String.trim(host)
-        "registrar whois server:" <> host -> String.trim(host)
+        "whois server:" <> host when host != "" -> String.trim(host)
+        "registrar whois server:" <> host when host != "" -> String.trim(host)
         _ -> nil
       end
     end)
